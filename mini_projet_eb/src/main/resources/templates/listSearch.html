@@ -1,0 +1,49 @@
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="template">
+<link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.0.0/css/bootstrap.min.css" />
+
+<head>
+	<meta charset="utf-8">
+	<title>Tasks List</title>
+</head>
+
+<body>
+	<div layout:fragment="Mycontent">
+		<div class="container mt-5">
+			<div class="card">
+				<div class="card-header">
+					Tasks List
+				</div>
+			<table class="table table-striped" style="text-align: center;">
+	<tr>
+		<th>Id</th>
+		<th>Task</th>
+		<th>creation Task</th>
+		<th>Actions</th>
+		<th></th>
+	</tr>
+	<tr th:each="n:${norritures}">
+		<td th:text="${n.idNorriture}"></td>
+		<td th:text="${n.nomNorriture}"></td>
+		<td th:text="${n.prixNorriture}"></td>
+		<td th:text="${n.dateCreation}"></td>
+	
+		<td th:if="${!#strings.isEmpty(n.categorie)}" th:text="${n.categorie.nomCat}"></td>
+		<td th:if="${#strings.isEmpty(n.categorie)}" th:text="no person"></td>
+
+		<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-danger" onclick="return confirm('Etes-vous sûr ?')"
+				th:href="@{supprimerProduit(id=${n.idNorriture})}">delete</a>
+		</td>
+		<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-secondary" th:href="@{modifierProduit(id=${n.idNorriture})}">update</a>
+		</td>
+	</tr>
+</table>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

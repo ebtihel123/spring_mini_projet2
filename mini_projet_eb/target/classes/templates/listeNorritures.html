@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="template">
+<link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.0.0/css/bootstrap.min.css" />
+<head>
+<meta charset="utf-8">
+<title>Liste des Norritures</title>
+</head>
+<body>
+    <div layout:fragment="Mycontent">
+    <div class="container mt-5">
+    <div class="card">
+     <div class="card-header">
+     Liste des Norritures
+     </div>
+     <form class="search-box" name="searchForm" th:action="@{searchNorriture}" method="GET">
+									</aside>
+									<div th:if="${mode!='SearchNorriture'}">
+									<label class="control-label" style="margin-left: 20px;font:bold; margin-top:10px;">Search :</label>
+										<div class="form-group" style='display:flex;'>
+											
+											<input type="search" id="myInput" name='nomNorriture' class="form-control"
+												placeholder="entrer nom norriture ..."
+												style='border:1px solid #7F8487;border-radius:5px;width:500px;margin-left:20px;' />
+														<th><input th:if="${mode!='SearchNorriture'}" class="btn btn-primary" type="submit"
+									value="Rechercher" style='margin-left:30px;'></th>
+										</div>
+										
+									</div>
+									</aside>
+
+							</td>
+					
+							</form>
+     <div class="card-body"> 
+     <table class="table table-striped" style="text-align: center;">
+     <tr>
+     <th>ID</th><th>Nom Norritures</th><th>Catégorie</th><th>Prix</th><th>Date Creation</th><th>Actions</th>
+     </tr> 
+     <tr th:each="p:${produits.content}">
+     <td th:text="${p.idNorriture}"></td>
+     <td th:text="${p.nomNorriture}"></td>
+            <td   th:if= "${!#strings.isEmpty(p.categorie)}"   th:text="${p.categorie.nomCat}"></td>  
+              <td   th:if= "${#strings.isEmpty(p.categorie)}"     th:text="${'Pas de Catégorie'}"></td> 
+     <td th:text="${p.prixNorriture}"></td> 
+     <td th:text="${p.dateCreation}"></td> 
+     
+               	
+<td sec:authorize="hasRole('ADMIN')" ><a class="btn btn-danger"
+onclick="return confirm('Etes-vous sûr ?')"
+th:href="@{supprimerProduit(id=${p.idNorriture},
+page=${currentPage},size=${size})}">Supprimer</a>
+</td>
+<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-success"
+th:href="@{modifierProduit(id=${p.idNorriture})}">Editer</a>
+</td>
+     </tr> 
+     </table>
+     <ul class="nav nav-pills">
+     <li th:each="page,status:${pages}">
+     <a th:class="${status.index==currentPage?'btn btn-primary':'btn' }"
+     th:href="@{ ListeNorritures(page=${status.index}, size=${size} ) }"
+     th:text="${status.index }"></a>
+     </li>
+     </ul>
+     
+     </div>
+    </div>
+    </div>
+    </div>
+    </body>
+</html>
